@@ -35,7 +35,6 @@ from deepeval.metrics.indicator import metric_progress_indicator
 from deepeval.metrics.prompt_alignment import schema as paschema
 from deepeval.templates import make_template_class
 
-
 PromptAlignmentTemplate = make_template_class("PromptAlignmentMetric")
 
 
@@ -178,10 +177,7 @@ class PromptAlignmentMetric(BaseMetric):
         if self.include_reason is False:
             return None
 
-        unalignment_reasons = []
-        for verdict in self.verdicts:
-            if verdict.verdict == Verdict.NO:
-                unalignment_reasons.append(verdict.reason)
+        unalignment_reasons = self._unalignment_reasons()
 
         prompt = self._get_prompt(
             "generate_reason",
@@ -203,10 +199,7 @@ class PromptAlignmentMetric(BaseMetric):
         if self.include_reason is False:
             return None
 
-        unalignment_reasons = []
-        for verdict in self.verdicts:
-            if verdict.verdict == Verdict.NO:
-                unalignment_reasons.append(verdict.reason)
+        unalignment_reasons = self._unalignment_reasons()
 
         prompt = self._get_prompt(
             "generate_reason",
@@ -288,11 +281,29 @@ class PromptAlignmentMetric(BaseMetric):
             ),
         )
 
+    def _unalignment_reasons(self) -> List[Optional[str]]:
+        reasons = [
+            verdict.reason
+            for verdict in self.verdicts
+            if verdict.verdict == Verdict.NO
+        ]
+        missing = len(self.prompt_instructions) - len(self.verdicts)
+        if missing > 0:
+            reasons.append(
+                f"The judge returned no verdict for {missing} of "
+                f"{len(self.prompt_instructions)} prompt instructions, so "
+                "they are counted as not followed."
+            )
+        return reasons
+
     def _calculate_score(self) -> float:
+        # One verdict is requested per instruction; any the judge omits count
+        # as unaligned instead of silently raising the score.
         return score_qag_verdicts(
             self,
             self.verdicts,
             passing=(Verdict.YES,),
+            expected=len(self.prompt_instructions),
         )
 
     @property
