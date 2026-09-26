@@ -1,8 +1,10 @@
 import json
 from threading import Lock
 
-from typing import Dict, List, Optional, Tuple, Any
-from opentelemetry.sdk.trace.export import ReadableSpan
+from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Any
+
+if TYPE_CHECKING:
+    from opentelemetry.sdk.trace.export import ReadableSpan
 
 try:
     from opentelemetry.attributes import BoundedAttributes
@@ -314,7 +316,7 @@ def validate_llm_test_case_data(
 
 
 def check_llm_input_from_gen_ai_attributes(
-    span: ReadableSpan,
+    span: "ReadableSpan",
 ) -> Tuple[Optional[list], Optional[dict]]:
     input = None
     output = None
@@ -436,7 +438,9 @@ def _flatten_input(input: list) -> list:
     return input
 
 
-def check_tool_name_from_gen_ai_attributes(span: ReadableSpan) -> Optional[str]:
+def check_tool_name_from_gen_ai_attributes(
+    span: "ReadableSpan",
+) -> Optional[str]:
     try:
         gen_ai_tool_name = span.attributes.get("gen_ai.tool.name")
         if gen_ai_tool_name:
@@ -448,7 +452,7 @@ def check_tool_name_from_gen_ai_attributes(span: ReadableSpan) -> Optional[str]:
 
 
 def check_tool_input_parameters_from_gen_ai_attributes(
-    span: ReadableSpan,
+    span: "ReadableSpan",
 ) -> Optional[dict]:
     try:
         tool_arguments = span.attributes.get("gen_ai.tool.call.arguments")
@@ -462,7 +466,7 @@ def check_tool_input_parameters_from_gen_ai_attributes(
     return None
 
 
-def check_span_type_from_gen_ai_attributes(span: ReadableSpan):
+def check_span_type_from_gen_ai_attributes(span: "ReadableSpan"):
     try:
         gen_ai_operation_name = span.attributes.get("gen_ai.operation.name")
         gen_ai_tool_name = span.attributes.get("gen_ai.tool.name")
@@ -481,7 +485,7 @@ def check_span_type_from_gen_ai_attributes(span: ReadableSpan):
     return "base"
 
 
-def check_model_from_gen_ai_attributes(span: ReadableSpan):
+def check_model_from_gen_ai_attributes(span: "ReadableSpan"):
     try:
         gen_ai_request_model_name = span.attributes.get("gen_ai.request.model")
         if gen_ai_request_model_name:
@@ -492,7 +496,7 @@ def check_model_from_gen_ai_attributes(span: ReadableSpan):
     return None
 
 
-def prepare_trace_llm_test_case(span: ReadableSpan) -> Optional[LLMTestCase]:
+def prepare_trace_llm_test_case(span: "ReadableSpan") -> Optional[LLMTestCase]:
 
     test_case = LLMTestCase(input="")
 
@@ -629,7 +633,7 @@ def post_test_run(traces: List[Trace], test_run_id: Optional[str]):
     # return test_run_manager.post_test_run(test_run) TODO: add after test run with metric collection is implemented
 
 
-def normalize_pydantic_ai_messages(span: ReadableSpan) -> list:
+def normalize_pydantic_ai_messages(span: "ReadableSpan") -> list:
     """Normalize PydanticAI message attributes across instrumentation versions."""
 
     def _normalize_messages(raw_messages: Any) -> list:
@@ -697,7 +701,7 @@ def _is_user_text_message(m: dict) -> bool:
 
 
 def check_pydantic_ai_agent_input_output(
-    span: ReadableSpan,
+    span: "ReadableSpan",
 ) -> Tuple[Optional[Any], Optional[Any]]:
     input_val: list = []
     output_val: Optional[Any] = None
@@ -753,7 +757,7 @@ def check_pydantic_ai_agent_input_output(
 
 
 def check_pydantic_ai_tools_called(
-    span: ReadableSpan,
+    span: "ReadableSpan",
 ) -> Optional[List[ToolCall]]:
     """Extract tool calls (and their results) from pydantic-ai message history
 
@@ -808,7 +812,7 @@ def check_pydantic_ai_tools_called(
         return None
 
 
-def check_tool_output(span: ReadableSpan):
+def check_tool_output(span: "ReadableSpan"):
     try:
         result = span.attributes.get("gen_ai.tool.call.result")
         if result is None:
@@ -820,7 +824,7 @@ def check_tool_output(span: ReadableSpan):
 
 
 def check_pydantic_ai_trace_input_output(
-    span: ReadableSpan,
+    span: "ReadableSpan",
 ) -> Tuple[Optional[Any], Optional[Any]]:
     input_val: Optional[Any] = None
     output_val: Optional[Any] = None
@@ -831,7 +835,7 @@ def check_pydantic_ai_trace_input_output(
     return input_val, output_val
 
 
-def check_model_parameters(span: ReadableSpan) -> Optional[dict]:
+def check_model_parameters(span: "ReadableSpan") -> Optional[dict]:
     try:
         raw_model_parameters = span.attributes.get("model_request_parameters")
         if raw_model_parameters and isinstance(raw_model_parameters, str):

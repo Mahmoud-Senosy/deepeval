@@ -1,9 +1,15 @@
-from opentelemetry.trace.status import Status, StatusCode
-from opentelemetry.sdk.trace.export import (
-    SpanExportResult,
-    SpanExporter,
-    ReadableSpan,
-)
+try:
+    from opentelemetry.trace.status import Status, StatusCode
+    from opentelemetry.sdk.trace.export import (
+        SpanExportResult,
+        SpanExporter,
+        ReadableSpan,
+    )
+except ImportError as e:
+    raise ImportError(
+        "OpenTelemetry tracing requires the OpenTelemetry SDK. Install it "
+        'with `pip install "deepeval[otel]"`.'
+    ) from e
 from pydantic import ValidationError, BaseModel
 from typing import Any, Dict, List, Optional
 from collections import defaultdict

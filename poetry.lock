@@ -2950,7 +2950,7 @@ files = [
     {file = "grpcio-1.78.0-cp39-cp39-win_amd64.whl", hash = "sha256:5361a0630a7fdb58a6a97638ab70e1dae2893c4d08d7aba64ded28bb9e7a29df"},
     {file = "grpcio-1.78.0.tar.gz", hash = "sha256:7382b95189546f375c174f53a5fa873cef91c4b8005faa05cc5b3beea9c4f1c5"},
 ]
-markers = {integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
+markers = {main = "extra == \"grok\"", integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
 
 [package.dependencies]
 typing-extensions = ">=4.12,<5.0"
@@ -3269,7 +3269,7 @@ files = [
     {file = "importlib_metadata-8.7.1-py3-none-any.whl", hash = "sha256:5a1f80bf1daa489495071efbb095d75a634cf28a8bc299581244063b53176151"},
     {file = "importlib_metadata-8.7.1.tar.gz", hash = "sha256:49fef1ae6440c182052f407c8d34a68f72efc36db9ca90dc0113398f2fdde8bb"},
 ]
-markers = {integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
+markers = {main = "extra == \"otel\"", integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
 
 [package.dependencies]
 zipp = ">=3.20"
@@ -6094,7 +6094,7 @@ files = [
     {file = "opentelemetry_api-1.39.1-py3-none-any.whl", hash = "sha256:2edd8463432a7f8443edce90972169b195e7d6a05500cd29e6d13898187c9950"},
     {file = "opentelemetry_api-1.39.1.tar.gz", hash = "sha256:fbde8c80e1b937a2c61f20347e91c0c18a1940cecf012d62e65a7caf08967c9c"},
 ]
-markers = {integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
+markers = {main = "extra == \"otel\"", integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
 
 [package.dependencies]
 importlib-metadata = ">=6.0,<8.8.0"
@@ -6291,7 +6291,7 @@ files = [
     {file = "opentelemetry_sdk-1.39.1-py3-none-any.whl", hash = "sha256:4d5482c478513ecb0a5d938dcc61394e647066e0cc2676bee9f3af3f3f45f01c"},
     {file = "opentelemetry_sdk-1.39.1.tar.gz", hash = "sha256:cf4d4563caf7bff906c9f7967e2be22d0d6b349b908be0d90fb21c8e9c995cc6"},
 ]
-markers = {integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
+markers = {main = "extra == \"otel\"", integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
 
 [package.dependencies]
 opentelemetry-api = "1.39.1"
@@ -6309,7 +6309,7 @@ files = [
     {file = "opentelemetry_semantic_conventions-0.60b1-py3-none-any.whl", hash = "sha256:9fa8c8b0c110da289809292b0591220d3a7b53c1526a23021e977d68597893fb"},
     {file = "opentelemetry_semantic_conventions-0.60b1.tar.gz", hash = "sha256:87c228b5a0669b748c76d76df6c364c369c28f1c465e50f661e39737e84bc953"},
 ]
-markers = {integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
+markers = {main = "extra == \"otel\"", integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
 
 [package.dependencies]
 opentelemetry-api = "1.39.1"
@@ -11065,7 +11065,7 @@ files = [
     {file = "zipp-3.23.0-py3-none-any.whl", hash = "sha256:071652d6115ed432f5ce1d34c336c0adfd6a884660d1e9712a256d3d3bd4b14e"},
     {file = "zipp-3.23.0.tar.gz", hash = "sha256:a07157588a12518c9d4034df3fbbee09c814741a33ff63c05fa29d26a2404166"},
 ]
-markers = {integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
+markers = {main = "extra == \"otel\"", integrations = "python_version >= \"3.10\" and python_version < \"3.15\""}
 
 [package.extras]
 check = ["pytest-checkdocs (>=2.4)", "pytest-ruff (>=0.2.1) ; sys_platform != \"cygwin\""]
@@ -11189,9 +11189,11 @@ markers = {langchain = "python_version >= \"3.10\""}
 cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and python_version < \"3.14\"", "cffi (>=2.0.0b0) ; platform_python_implementation != \"PyPy\" and python_version >= \"3.14\""]
 
 [extras]
+grok = ["grpcio"]
 inspect = ["pyperclip", "textual"]
+otel = ["opentelemetry-api", "opentelemetry-sdk"]
 
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9, <4.0"
-content-hash = "01aa6352de506ef5ffdfa71c8c068af1ee42b1190219f4e6623de09c6227d724"
+content-hash = "d707f3a470e6cf4d44a6fc3ca633d9f9057dda40981665f9032e950881399e01"
